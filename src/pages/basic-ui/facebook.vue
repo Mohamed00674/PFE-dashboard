@@ -1,21 +1,13 @@
 <template>
-<div>
-    
-      <img class="rounded-circle" alt="50x50" src=""
-          data-holder-rendered="true"> <br>
-    <facebook-login class="button"
-    appId = "285508587122471"
-    @login="onLogin"
-    @logOut="onLogout"
-    @sdk-loaded="sdkLoaded"
-     />
-</div>
+    <div>
+        <button @click="loginWithFb()">Login with Facebook</button>
+    </div>
 </template>
 
 <script>
-import axios from 'axios'
-import Vue from 'vue'
-import facebookLogin from 'facebook-login-vuejs';
+
+import jwtDecode from 'jwt-decode'
+
 export default {
   name: 'facebook',
   data(){
@@ -25,43 +17,11 @@ export default {
           name : ""
       }
   },
-   components: {
-        facebookLogin
-    },
     methods:{
-        getUserData(){
-            this.FB.api('/me', 'GET' , {fields : 'id,name,email' },
-            userInformation => {
-                console.warn("data api " , userInformation )
-                this.personalID = userInformation.id;
-                this.email = userInformation.email;
-                this.name = userInformation.name;
-               this.authFacebook()
-            } 
-)
-        },
-        sdkLoaded(payload){
-            this.isConnected = payload.isConnected;
-            this.FB = payload.FB
-            if(this.isConnected) this.getUserData()
-        },
-        onLogin(){
-            this.isConnected = true;
-            this.getUserData();
-        },
-        onLogout(){
-            this.isConnected = false;
-        },
-        authFacebook(){
-            axios.post('https://localhost:2400/api/auth/facebook' ,{
-                email : this.email,
-                name : this.name,
-                id : this.id
-            }).then(response => {
-                console.log(response)
-            } ).catch(error => {
-                console.log(error)
-            } )
+        loginWithFb() {
+            const user = jwtDecode(localStorage.getItem('accessToken'));
+
+            window.location = `http://localhost:2400/auth/facebook?id=${user._id}`;
         }
     }
 }

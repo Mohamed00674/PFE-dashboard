@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve --port 8081 --https true ",
+    "serve": "vue-cli-service serve --port 8081",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
@@ -26,6 +26,7 @@
     "flag-icon-css": "^3.4.5",
     "font-awesome": "^4.7.0",
     "jquery": "^3.4.1",
+    "jwt-decode": "^3.1.2",
     "pusher-js": "^7.1.0-beta",
     "simple-line-icons": "^2.4.1",
     "ti-icons": "^0.1.2",
