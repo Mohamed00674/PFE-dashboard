@@ -19,6 +19,9 @@
                   <div class="mt-3">
                     <button class="btn btn-block btn-gradient-primary btn-lg font-weight-medium auth-form-btn" > LOGIN</button>
                   </div>
+                  <div v-if="error" >
+                  {{error}}
+                  </div>
                   <div class="my-2 d-flex justify-content-between align-items-center">
                     <a href="javascript:void(0);" class="auth-link text-black">Forgot password?</a>
                   </div>
@@ -45,21 +48,23 @@ export default {
   data() {
     return {
       email : "",
-      password : ""
+      password : "",
+      error: "",
     }
   },
   methods:{
    async login(){
-      const response = await axios.post('http://localhost:2400/api/login' ,{
-        email : this.email,
-        password : this.password
-      })
-      console.log(response);
-        let token = response.data.token;
-        localStorage.setItem("accessToken", token);
-        //how to know if any user is connected : localStorage
-        // localStorage.removeItem("accessToken");
-
+      try {
+        const response = await axios.post('http://localhost:2400/api/login' ,{
+          email : this.email,
+          password : this.password
+        });
+      let token = response.data.token;
+      localStorage.setItem("accessToken", token);
+      this.$route.push('/');
+      } catch (err) {
+        this.error = err.response.data.message;
+      }
     }
   }
 }
