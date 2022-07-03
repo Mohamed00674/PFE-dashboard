@@ -5,17 +5,17 @@
         <li class="nav-item nav-profile">
           <a href="javascript:void(0);" class="nav-link">
             <div class="nav-profile-image">
-              <img src="@/assets/images/faces/face1.jpg" alt="profile">
+              <img src="@/assets/images/faces/def.jpg" alt="profile">
               <span class="login-status online"></span>
             </div>
             <div class="nav-profile-text d-flex flex-column">
-              <span class="font-weight-bold mb-2">David Grey. H</span>
+              <span v-if="user" class="font-weight-bold mb-2">{{user.username}}</span>
             </div>
             <i class="mdi mdi-bookmark-check text-success nav-profile-badge"></i>
           </a>
         </li>
         <li class="nav-item" v-on:click="collapseAll">
-          <router-link class="nav-link" to="/">
+          <router-link class="nav-link" to="/dashboard/">
             <span class="menu-title">Dashboard</span>
             <i class="mdi mdi-home menu-icon"></i>
           </router-link>
@@ -81,6 +81,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   name: 'sidebar',
  data () {
@@ -89,9 +90,18 @@ export default {
      { show: false },
      { show: false },
      { show: false },
-     
-    ]
-    }
+    ],
+    user : null
+}
+  },
+  async created() {
+  const response = await axios.get('http://localhost:2400/api/profile',{
+    headers:{
+      authorization :  localStorage.getItem('accessToken')
+    },
+  })
+  this.user = response.data;
+
   },
   methods: {
     collapseAll() {

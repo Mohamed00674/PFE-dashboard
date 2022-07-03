@@ -7,6 +7,9 @@
           <div class="row w-100 flex-grow">
             <div class="col-xl-4 col-lg-6 mx-auto">
               <div class="auth-form-light text-left p-5">
+                <div  class="alert alert-danger" role="alert"   v-if="error" >
+                {{error}}
+                </div>
                 <h4>New here?</h4>
                 <h6 class="font-weight-light">Signing up is easy. It only takes a few steps</h6>
                 <form @submit.prevent="register" class="pt-3">
@@ -51,20 +54,25 @@ export default {
       username : '',
       email :'',
       password :'',
+      error : "",
       }
     },
   methods: {
-     register(){
-      const response =  axios.post('http://localhost:2400/api/signup' ,{
+    async register(){
+      try{
+        const response = await axios.post('http://localhost:2400/api/signup' ,{
         email : this.email,
         username : this.username,
         password : this.password
-      }).then(response => {
-        console.log(response)
-      }).catch(error => {
-        console.log(error)
-      } )
-        this.$router.push('/auth/login');
+      })
+      this.$router.push(`/auth/login?success=${response.data.message}`);
+      }catch(err){
+        this.error = err.response.data.message;
+      }
+
+      
+
+      
     }  
   },
 

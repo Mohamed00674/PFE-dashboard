@@ -2,7 +2,7 @@
   <b-navbar id="template-header" class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row" toggleable="lg">
     <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center">
       <router-link class="navbar-brand brand-logo" to="/">
-        <img src="@/assets/images/logo.svg" alt="logo" />
+        <img src="@/assets/images/logo.png" alt="logo" />
       </router-link>
       <router-link class="navbar-brand brand-logo-mini" to="/">
         <img src="@/assets/images/logo-mini.svg" alt="logo" />
@@ -18,7 +18,7 @@
             <div class="input-group-prepend bg-transparent">
               <i class="input-group-text border-0 mdi mdi-magnify"></i>
             </div>
-            <input type="text" class="form-control bg-transparent border-0" placeholder="Search projects">
+            <input type="text" class="form-control bg-transparent border-0" placeholder="Search posts">
           </div>
         </form>
       </div>
@@ -27,20 +27,16 @@
           <template slot="button-content">
             <span class="nav-link dropdown-toggle" id="profileDropdown" href="javascript:void(0);" data-toggle="dropdown" aria-expanded="false">
               <div class="nav-profile-img">
-                <img src="@/assets/images/faces/face1.jpg" alt="image">
+                <img src="@/assets/images/faces/def.jpg" alt="image">
                 <span class="availability-status online"></span>
               </div>
               <div class="nav-profile-text">
-                <p class="mb-1 text-black">David Greymaax</p>
+                <p v-if="user" class="mb-1 text-black"> {{user.username}}</p>
               </div>
             </span>
           </template>
-          <b-dropdown-item class="preview-item">
-            <i class="mdi mdi-cached mr-2 text-success"></i> Activity Log
-          </b-dropdown-item>
-          <b-dropdown-item class="preview-item">
-            <i class="mdi mdi-logout mr-2 text-primary"></i> Signout
-          </b-dropdown-item>
+           <router-link to="/profile" class="dropdown-item">Profile</router-link>
+           <router-Link to="http://localhost:8080/" class="dropdown-item">Logout</router-link>
         </b-nav-item-dropdown>
         <b-nav-item-dropdown right class="preview-list">
           <template slot="button-content">
@@ -140,8 +136,23 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   name: 'app-header',
+  data() {
+    return {
+      user : null,
+    }
+  },   
+   async created() {
+  const response = await axios.get('http://localhost:2400/api/profile',{
+    headers:{
+      authorization :  localStorage.getItem('accessToken')
+    },
+  })
+  this.user = response.data;
+
+  },
   methods: {
     toggleSidebar: () => {
       document.querySelector('body').classList.toggle('sidebar-icon-only');
@@ -149,8 +160,13 @@ export default {
     toggleMobileSidebar: () => {
       document.querySelector('#sidebar').classList.toggle('active');
     }
+  },
+  logout: () => {
+    localStorage.removeItem('accessToken');
+    this.$router.push('http://localhost:8080/')
   }
 }
+
 </script>
 
 <style scoped>

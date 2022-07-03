@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve --port 8081",
+    "serve": "vue-cli-service serve --port 8081 ",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
@@ -52,6 +52,7 @@
     "vue-snotify": "^3.2.1",
     "vue-sorted-table": "^1.2.0",
     "vue-star-rating": "^1.6.1",
+    "vue-swal": "^1.0.0",
     "vue-sweetalert2": "^2.1.5",
     "vue-trix": "github:hanhdt/vue-trix",
     "vue2-ace-editor": "0.0.15",
@@ -59,7 +60,8 @@
     "vue2-dragula": "^2.5.4",
     "vue2-google-maps": "^0.10.7",
     "vuejs-datepicker": "^1.6.2",
-    "vuelidate": "^0.7.4"
+    "vuelidate": "^0.7.4",
+    "vuex": "^4.0.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.0.0",

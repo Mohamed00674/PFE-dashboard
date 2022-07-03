@@ -1,5 +1,8 @@
 <template>
   <section class="dashboard">
+    <div v-if="success" class="alert alert-success" role="alert" >
+     {{success}}
+      </div>
     <div class="page-header">
       <h3 class="page-title">
       <span class="page-title-icon bg-gradient-primary text-white mr-2">
@@ -300,13 +303,11 @@
 </template>
 
 <script>
+import axios from 'axios'
 import visitAndSalesStatitics from '../../components/charts/widgets/visitAndSalesStatitics'
 import trafficSourceChart from '../../components/charts/widgets/trafficSourceChart'
 import todoList from '../../components/apps/todoList'
 import DatePicker from 'vue2-datepicker'; 
-import axios from 'axios'
-
-
 export default {
   name: 'dashboard',
   components: {
@@ -315,22 +316,39 @@ export default {
     visitAndSalesStatitics,
     todoList
   },
+  
   data() {
     return {
-      time1: null
+      time1: null,
+      success : "",
+      username : ""
     };
   },
- async created() {
-    const response = await axios.get('http://localhost:2400/api/dashboard' ,{
-      headers : {
-        Authorization : 'Bearer' + localStorage.getItem('token')
-      }
-    } ) 
+  mounted() {
+    const params = new Proxy(new URLSearchParams(window.location.search), {
+      get: (searchParams, prop) => searchParams.get(prop),
+    });
+
+    if (params.success) this.success = params.success;
+
+    setTimeout(() => {
+      this.success = '';
+    }, 5000);
+  },
+  async created() {
+  const response = await axios.get('http://localhost:2400/api/profile',{
+    headers:{
+      authorization :  localStorage.getItem('accessToken')
+    }
+  })
     console.log(response)
   },
 }
 </script>
 
 <style scoped>
-
+#log{
+  background-color: #48e439;
+ width : 100%;
+}
 </style>

@@ -6,7 +6,7 @@
         <Sidebar/>
         <div class="main-panel">
           <div class="content-wrapper">
-            <router-view></router-view>
+            <router-view :user="user"></router-view>
           </div> <!-- content wrapper ends -->
           <Footer/>
         </div> <!-- main panel ends -->
@@ -25,6 +25,12 @@
       Header,
       Sidebar,
       Footer
-    }
+    },
+    data() {
+      return {
+        user : null
+      }
+    },
+   
   }
 </script>
